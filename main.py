@@ -1,6 +1,6 @@
-import re
 import requests
-import textwrap
+
+from utils import clean_and_short, print_title, print_cleaned
 
 
 def main():
@@ -9,26 +9,11 @@ def main():
     news.reverse()
 
     for new in news:
-        print(new.get('post_hour', ''), new.get('post_title', '-'))
+        print_title(new.get('post_hour', '') + ' ' + new.get('post_title', '-'))
         lines = clean_and_short(new.get('post_content', ''))
         for line in lines:
-            print(line)
+            print_cleaned(line)
         print()
-
-
-def clean_and_short(html, lines=4):
-    return short_string(cleanhtml(html), lines)
-
-
-def cleanhtml(raw_html):
-    cleanr = re.compile('<.*?>')
-    cleantext = re.sub(cleanr, '', raw_html)
-    return cleantext.strip()
-
-
-def short_string(str, lines):
-    wrapper = textwrap.TextWrapper(width=80)
-    return wrapper.wrap(text=str)[:lines]
 
 
 if __name__ == "__main__":
