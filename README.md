@@ -1,4 +1,4 @@
-BiobioNews
+BioBioNews
 ==========
 
 Lector de noticias en linea de comandos
