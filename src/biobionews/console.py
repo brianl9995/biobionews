@@ -1,23 +1,26 @@
 import click
-import requests
 
-from . import __version__
+from . import __version__, biobio
 from .utils import clean_and_short, get_cleaned
-
-API_URL = "https://www.biobiochile.cl/lista/api/get-todo?limit=10"
 
 
 @click.command()
+@click.option(
+    "--limit",
+    "-l",
+    default=10,
+    help="Limite de noticias",
+    metavar="LIMIT",
+    show_default=True
+)
 @click.version_option(version=__version__)
-def main():
-    with requests.get(API_URL) as response:
-        response.raise_for_status()
-        data = response.json()
-        data.reverse()
+def main(limit):
+    data = biobio.last_news(limit=limit)
 
     for new in data:
-        click.secho(new.get('post_hour', '') + ' ' + new.get('post_title', '-'), fg='yellow')
+        title = f"{new.get('post_hour')} {get_cleaned(new.get('post_title', '-'))}"
+        click.secho(title, fg='yellow')
         lines = clean_and_short(new.get('post_content', ''))
         for line in lines:
-            click.echo(get_cleaned(line), nl=False)
+            click.echo(get_cleaned(line))
         click.echo("")

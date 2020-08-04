@@ -5,24 +5,39 @@ Lector de noticias en linea de comandos
 
 ## Instrucciones de instalacion
 
-1.- Clonar Repositorio
+1. Clonar Repositorio
 
-```
-git clone https://github.com/brianl9995/biobionews.git 
-cd biobionews
-```
+    ```
+    git clone https://github.com/brianl9995/biobionews.git 
+    cd biobionews
+    ```
 
-2.- Crear entorno virtual e Instalar requerimientos
+2. Instalar requerimientos
 
-```
-python3 -m venv env
-source env/bin/activate
-pip install -r requirements.txt
-```
+    ```
+    poetry install
+    ```
 
+3. Ejecutar
 
-3.- Ejecutar
+    ```
+    poetry run biobionews
+    ```
 
-```
-python3 main.py
-```
+4. Run Tests
+
+    ```
+    poetry run pytest
+    ```
+
+5. Run coverage
+
+    ```
+    poetry run pytest --cov
+    ```
+
+6. Nox
+
+    ```
+    nox -r
+    ```

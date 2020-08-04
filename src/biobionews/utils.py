@@ -3,8 +3,8 @@ import textwrap
 from bs4 import BeautifulSoup
 
 
-def get_cleaned(str):
-    print(BeautifulSoup(str, features="html.parser"))
+def get_cleaned(value):
+    return BeautifulSoup(value, features="html.parser")
 
 
 def clean_and_short(html, lines=5):
