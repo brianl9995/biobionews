@@ -1,0 +1,24 @@
+[tool.poetry]
+name = "biobionews"
+version = "0.1.0"
+description = "Lector de noticias en linea de comandos"
+license = "MIT"
+readme = "README.md"
+homepage = "https://github.com/brianl9995/biobionews"
+repository = "https://github.com/brianl9995/biobionews"
+authors = ["Brian <bl0883002@gmail.com>"]
+
+[tool.poetry.dependencies]
+python = "^3.8"
+requests = "^2.24.0"
+beautifulsoup4 = "^4.9.1"
+click = "^7.1.2"
+
+[tool.poetry.dev-dependencies]
+
+[tool.poetry.scripts]
+biobionews = "biobionews.console:main"
+
+[build-system]
+requires = ["poetry>=0.12"]
+build-backend = "poetry.masonry.api"

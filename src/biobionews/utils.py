@@ -3,24 +3,8 @@ import textwrap
 from bs4 import BeautifulSoup
 
 
-class bcolors:
-    HEADER = '\033[95m'
-    OKBLUE = '\033[94m'
-    OKGREEN = '\033[92m'
-    WARNING = '\033[93m'
-    FAIL = '\033[91m'
-    ENDC = '\033[0m'
-    BOLD = '\033[1m'
-    UNDERLINE = '\033[4m'
-
-
-def print_cleaned(str):
+def get_cleaned(str):
     print(BeautifulSoup(str, features="html.parser"))
-
-
-def print_title(str):
-    title = BeautifulSoup(str, features="html.parser")
-    print(f"{bcolors.WARNING}{title}{bcolors.ENDC}")
 
 
 def clean_and_short(html, lines=5):
