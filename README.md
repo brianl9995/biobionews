@@ -1,3 +1,5 @@
+[![Tests](https://github.com/brianl9995/biobionews/workflows/Tests/badge.svg)](https://github.com/brianl9995/biobionews/actions?workflow=Tests)
+
 BioBioNews
 ==========
 
