@@ -1,6 +1,5 @@
 .idea/*
 
-# Byte-compiled / optimized / DLL files  
 /.coverage
 /.mypy_cache/
 /.nox/

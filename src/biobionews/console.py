@@ -11,16 +11,16 @@ from .utils import clean_and_short, get_cleaned
     default=10,
     help="Limite de noticias",
     metavar="LIMIT",
-    show_default=True
+    show_default=True,
 )
 @click.version_option(version=__version__)
 def main(limit):
     data = biobio.last_news(limit=limit)
 
     for new in data:
-        title = f"{new.get('post_hour')} {get_cleaned(new.get('post_title', '-'))}"
-        click.secho(title, fg='yellow')
-        lines = clean_and_short(new.get('post_content', ''))
+        title = f"{new.get('post_hour')} {get_cleaned(new.get('post_title'))}"
+        click.secho(title, fg="yellow")
+        lines = clean_and_short(new.get("post_content", ""))
         for line in lines:
             click.echo(get_cleaned(line))
         click.echo("")

@@ -1,0 +1,8 @@
+[flake8]
+select = B,B9,BLK,C,E,F,I,S,W
+ignore = E203,W503
+max-complexity = 10
+max-line-length = 120
+application-import-names = biobionews,tests
+import-order-style = google
+per-file-ignores = tests/*:S101

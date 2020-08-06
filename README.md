@@ -8,7 +8,7 @@ Lector de noticias en linea de comandos
 1. Clonar Repositorio
 
     ```
-    git clone https://github.com/brianl9995/biobionews.git 
+    git clone https://github.com/brianl9995/biobionews.git
     cd biobionews
     ```
 

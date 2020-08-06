@@ -1,8 +1,8 @@
+from click.testing import CliRunner
 import pytest
 import requests
 
 from biobionews import console
-from click.testing import CliRunner
 
 
 @pytest.fixture
