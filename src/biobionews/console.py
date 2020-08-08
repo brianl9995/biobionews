@@ -14,13 +14,13 @@ from .utils import clean_and_short, get_cleaned
     show_default=True,
 )
 @click.version_option(version=__version__)
-def main(limit):
+def main(limit: int) -> None:
     data = biobio.last_news(limit=limit)
 
     for new in data:
-        title = f"{new.get('post_hour')} {get_cleaned(new.get('post_title'))}"
+        title = f"{new.post_hour} {get_cleaned(new.post_title)}"
         click.secho(title, fg="yellow")
-        lines = clean_and_short(new.get("post_content", ""))
+        lines = clean_and_short(new.post_content)
         for line in lines:
             click.echo(get_cleaned(line))
         click.echo("")
