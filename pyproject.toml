@@ -10,7 +10,7 @@ authors = ["Brian <bl0883002@gmail.com>"]
 
 [tool.poetry.dependencies]
 python = "^3.8"
-requests = "^2.24.0"
+requests = "^2.32.2"
 beautifulsoup4 = "^4.9.1"
 click = "^7.1.2"
 desert = "^2020.1.6"
