@@ -3,7 +3,9 @@
 BioBioNews
 ==========
 
-Lector de noticias de biobiochile.cl en CLI
+Lector de noticias de biobiochile.cl en TUI
+
+![BioBioNews TUI](screen.png)
 
 ## Instrucciones de instalación
 
@@ -29,7 +31,9 @@ python3 -m venv .venv
 PYTHONPATH=src .venv/bin/python -m biobionews --limit 10
 ```
 
-Opciones: `--limit/-l` (cantidad de noticias), `--width/-w` (ancho del texto), `--lines/-n` (líneas por noticia).
+Teclas: `↑`/`↓` navegar entre noticias, `enter` abrir en el navegador, `r` actualizar, `q` salir. Se actualiza solo cada 1 minuto. Por defecto usa todo el ancho de la pantalla (limitable con `--width`).
+
+Opciones: `--plain` (imprime sin TUI), `--limit/-l` (cantidad de noticias), `--width/-w` (ancho del texto), `--lines/-n` (líneas por noticia).
 
 ### 4. Tests
 

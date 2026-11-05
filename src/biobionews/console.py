@@ -1,3 +1,6 @@
+import shutil
+from typing import Optional
+
 import click
 
 from . import __version__, biobio
@@ -16,10 +19,10 @@ from .utils import get_cleaned, make_clickable, post_or_ia
 @click.option(
     "--width",
     "-w",
-    default=180,
-    help="Ancho del texto",
+    default=None,
+    type=int,
+    help="Ancho maximo (columnas); por defecto usa toda la pantalla",
     metavar="WIDTH",
-    show_default=True,
 )
 @click.option(
     "--lines",
@@ -29,8 +32,19 @@ from .utils import get_cleaned, make_clickable, post_or_ia
     metavar="LINES",
     show_default=True,
 )
+@click.option(
+    "--plain", is_flag=True, help="Imprimir en la consola sin abrir la TUI"
+)
 @click.version_option(version=__version__)
-def main(limit: int, width: int, lines: int) -> None:
+def main(limit: int, width: Optional[int], lines: int, plain: bool) -> None:
+    if not plain:
+        from .tui import NewsApp
+
+        NewsApp(limit=limit, lines=lines, width=width).run()
+        return
+
+    if width is None:
+        width = shutil.get_terminal_size().columns
     data = biobio.last_news(limit=limit)
 
     # Reverse the data to show the latest news first
