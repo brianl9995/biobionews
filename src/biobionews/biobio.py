@@ -14,6 +14,8 @@ class New:
     post_hour: str
     post_title: str
     post_content: str
+    resumen_de_ia: str
+    post_URL: str
 
 
 schema = desert.schema(New, meta={"unknown": marshmallow.EXCLUDE}, many=True)

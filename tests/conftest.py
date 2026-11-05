@@ -13,6 +13,12 @@ def pytest_configure(config: Config) -> None:
 def mock_requests_get(mocker: MockFixture) -> Mock:
     mock = mocker.patch("requests.get")
     mock.return_value.__enter__.return_value.json.return_value = [
-        {"post_title": "foo", "post_hour": "10:20", "post_content": "bar"}
+        {
+            "post_title": "foo",
+            "post_hour": "10:20",
+            "post_content": "bar",
+            "post_URL": "http://example.com",
+            "resumen_de_ia": "",
+        }
     ]
     return mock

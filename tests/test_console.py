@@ -15,7 +15,7 @@ def runner() -> CliRunner:
 def test_main_succeeds(runner: CliRunner, mock_requests_get: Mock) -> None:
     result = runner.invoke(console.main)
     assert mock_requests_get.called
-    assert "10:20 foo\nbar\n\n" in result.output
+    assert "\x1b]8;;http://example.com\x1b\\10:20 foo\x1b]8;;\x1b\\\nbar\n\n" in result.output
     assert result.exit_code == 0
 
 
