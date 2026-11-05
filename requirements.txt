@@ -1,0 +1,6 @@
+requests==2.34.2
+beautifulsoup4==4.15.0
+click==8.5.0
+desert==2022.9.22
+marshmallow==4.4.0
+textual==8.1.1

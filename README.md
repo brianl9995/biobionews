@@ -3,43 +3,37 @@
 BioBioNews
 ==========
 
-Lector de noticias en linea de comandos
+Lector de noticias de biobiochile.cl en CLI
 
-## Instrucciones de instalacion
+## Instrucciones de instalación
 
-1. Clonar Repositorio
+### 1. Clonar Repositorio
 
-    ```
-    git clone https://github.com/brianl9995/biobionews.git
-    cd biobionews
-    ```
+```bash
+git clone https://github.com/brianl9995/biobionews.git
+cd biobionews
+```
 
-2. Instalar requerimientos
+### 2. Configurar entorno virtual e instalar dependencias
 
-    ```
-    poetry install
-    ```
+Requiere Python 3.10 o superior.
 
-3. Ejecutar
+```bash
+python3 -m venv .venv
+.venv/bin/pip install -r requirements.txt
+```
 
-    ```
-    poetry run biobionews
-    ```
+### 3. Ejecutar
 
-4. Run Tests
+```bash
+PYTHONPATH=src .venv/bin/python -m biobionews --limit 10
+```
 
-    ```
-    poetry run pytest
-    ```
+Opciones: `--limit/-l` (cantidad de noticias), `--width/-w` (ancho del texto), `--lines/-n` (líneas por noticia).
 
-5. Run coverage
+### 4. Tests
 
-    ```
-    poetry run pytest --cov
-    ```
-
-6. Nox
-
-    ```
-    nox -r
-    ```
+```bash
+.venv/bin/pip install pytest pytest-mock
+.venv/bin/pytest
+```
