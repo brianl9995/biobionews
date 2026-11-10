@@ -47,13 +47,18 @@ def main(limit: int, width: Optional[int], lines: int, plain: bool) -> None:
         width = shutil.get_terminal_size().columns
     data = biobio.last_news(limit=limit)
 
-    # Reverse the data to show the latest news first
+    # Reverse the data to show the latest news first, live news on top
     data = data[::-1]
+    data.sort(key=lambda new: new.live_label is None)
 
     for new in data:
         title = f"{new.post_hour} {get_cleaned(new.post_title)}"
         clickable_title = make_clickable(new.post_URL, title)
-        click.secho(clickable_title, fg="yellow")
+        if new.live_label:
+            badge = click.style(f" ● {new.live_label} ", fg="white", bg="red", bold=True)
+            click.echo(f"{badge} {click.style(clickable_title, fg='red', bold=True)}")
+        else:
+            click.secho(clickable_title, fg="yellow")
         text_lines = post_or_ia(new.post_content, new.resumen_de_ia, lines, width)
         for line in text_lines:
             click.echo(get_cleaned(line))
