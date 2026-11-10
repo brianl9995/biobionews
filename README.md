@@ -33,6 +33,10 @@ PYTHONPATH=src .venv/bin/python -m biobionews --limit 10
 
 Teclas: `↑`/`↓` navegar entre noticias, `enter` abrir en el navegador, `r` actualizar, `q` salir. Se actualiza solo cada 1 minuto. Por defecto usa todo el ancho de la pantalla (limitable con `--width`).
 
+Se omiten las noticias de fútbol (nacional e internacional), espectáculos y farándula (incluye Dopamina). Las categorías excluidas están en `EXCLUDED_CATEGORIES` y `EXCLUDED_PATHS` de `src/biobionews/biobio.py`.
+
+Las noticias "en desarrollo" o "en vivo" quedan fijas arriba del listado, destacadas en rojo (en `--plain` se imprimen primero).
+
 Opciones: `--plain` (imprime sin TUI), `--limit/-l` (cantidad de noticias), `--width/-w` (ancho del texto), `--lines/-n` (líneas por noticia).
 
 ### 4. Tests

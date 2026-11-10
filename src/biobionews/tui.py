@@ -25,19 +25,30 @@ class NewsList(VerticalScroll):
 
 
 class NewsItem(Horizontal):
-    def __init__(self, url: str, hour: str, title: str, body: str) -> None:
-        super().__init__()
+    def __init__(
+        self,
+        url: str,
+        hour: str,
+        title: str,
+        body: str,
+        live_label: Optional[str] = None,
+    ) -> None:
+        super().__init__(classes="-live" if live_label else "")
         self.url = url
         self.hour = hour
         self.title_text = title
         self.body_text = body
+        self.live_label = live_label
 
     def compose(self) -> ComposeResult:
         yield Static(self.hour, classes="hour")
         with Vertical(classes="text"):
-            yield Static(
-                Text(self.title_text, style=Style(link=self.url)), classes="title"
-            )
+            title = Text()
+            if self.live_label:
+                title.append(f" ● {self.live_label} ", style="bold white on red")
+                title.append(" ")
+            title.append(self.title_text, style=Style(link=self.url))
+            yield Static(title, classes="title")
             yield Static(Text(self.body_text), classes="body")
 
 
@@ -47,6 +58,11 @@ class NewsApp(App[None]):
     CSS = """
     Screen { align-horizontal: center; }
     #news { width: 100%; padding: 0 1; }
+    #pinned {
+        width: 100%; height: auto; max-height: 50%; padding: 0 1 1 1;
+        border-bottom: heavy $error;
+    }
+    #pinned.-empty { display: none; }
     NewsItem { height: auto; padding: 0 1; margin-top: 1; border: round transparent; }
     NewsItem.-selected { border: round $warning; background: $boost; }
     NewsItem .hour { width: 7; color: $warning; text-style: bold; }
@@ -54,6 +70,10 @@ class NewsApp(App[None]):
     NewsItem .title { text-style: bold; }
     NewsItem .body { color: $text-muted; }
     NewsItem.-selected .body { color: $text; }
+    NewsItem.-live { border: heavy $error; background: $error 15%; }
+    NewsItem.-live .hour { color: $error; }
+    NewsItem.-live .body { color: $text; }
+    NewsItem.-live.-selected { border: heavy $warning; }
     .status { color: $text-muted; }
     """
     BINDINGS = [
@@ -77,12 +97,13 @@ class NewsApp(App[None]):
 
     def compose(self) -> ComposeResult:
         yield Header()
+        yield NewsList(id="pinned", classes="-empty")
         yield NewsList(Static("Cargando...", classes="status"), id="news")
         yield Footer()
 
     def on_mount(self) -> None:
         if self.max_width:
-            for selector in ("Header", "#news", "Footer"):
+            for selector in ("Header", "#pinned", "#news", "Footer"):
                 self.query_one(selector).styles.max_width = self.max_width
         self.action_refresh()
         self.set_interval(REFRESH_SECONDS, self.action_refresh)
@@ -110,13 +131,15 @@ class NewsApp(App[None]):
         self.selected = len(items) - 1 if index < 0 else min(index, len(items) - 1)
         for position, item in enumerate(items):
             item.set_class(position == self.selected, "-selected")
-        container = self.query_one("#news", NewsList)
-        if self.selected == 0:
+        item = items[self.selected]
+        container = item.parent
+        regular = list(container.query_children(NewsItem))
+        if item is regular[0]:
             container.scroll_home(animate=False)
-        elif self.selected == len(items) - 1:
+        elif item is regular[-1]:
             container.scroll_end(animate=False)
         else:
-            items[self.selected].scroll_visible(animate=False)
+            item.scroll_visible(animate=False)
 
     def action_move(self, delta: int) -> None:
         self.select(self.selected + delta)
@@ -146,7 +169,9 @@ class NewsApp(App[None]):
         self.sub_title = f"Actualizado {datetime.now():%H:%M:%S}"
 
     async def render_news(self) -> None:
+        pinned = self.query_one("#pinned", NewsList)
         container = self.query_one("#news", NewsList)
+        live: List[NewsItem] = []
         items: List[NewsItem] = []
         for new in self.news:
             title = get_cleaned(new.post_title)
@@ -154,7 +179,13 @@ class NewsApp(App[None]):
                 new.post_content, new.resumen_de_ia, self.lines, self.text_width
             )
             body = "\n".join(get_cleaned(line) for line in text)
-            items.append(NewsItem(new.post_URL, new.post_hour, title, body))
+            item = NewsItem(new.post_URL, new.post_hour, title, body, new.live_label)
+            (live if new.live_label else items).append(item)
+        # Newest live news first, pinned above the scrolling list
+        live.reverse()
+        await pinned.remove_children()
+        await pinned.mount_all(live)
+        pinned.set_class(not live, "-empty")
         await container.remove_children()
         await container.mount_all(items)
         self.select(self.selected)
